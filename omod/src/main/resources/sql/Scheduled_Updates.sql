@@ -39,7 +39,7 @@ p.death_date
 from person p 
 left join patient pa on pa.patient_id=p.person_id
 inner join person_name pn on pn.person_id = p.person_id and pn.voided=0
-where pn.date_created >= last_update_time
+where p.voided=0 and pn.date_created >= last_update_time
 or pn.date_changed >= last_update_time
 or pn.date_voided >= last_update_time
 or p.date_created >= last_update_time

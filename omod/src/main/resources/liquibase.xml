@@ -57,14 +57,14 @@
         </sql>
     </changeSet>
 <!-- consider removing this changeset if not necessary. data tool could be setup separately-->
-    <changeSet id="${project.parent.artifactId}-20171106-1743" author="aojwang">
+    <!--<changeSet id="${project.parent.artifactId}-20171106-1743" author="aojwang">
         <comment>
             Sets up data tool tables
         </comment>
         <sql>
             CALL create_datatools_tables();
         </sql>
-    </changeSet>
+    </changeSet>-->
     <!--Adding scheduled task to periodically refresh ETL tables-->
     <changeSet id="${project.parent.artifactId}-20171212-1744" author="aojwang">
         <preConditions onFail="MARK_RAN">

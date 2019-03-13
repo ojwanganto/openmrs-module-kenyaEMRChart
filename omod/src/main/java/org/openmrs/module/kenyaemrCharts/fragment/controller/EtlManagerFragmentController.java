@@ -131,9 +131,9 @@ public class EtlManagerFragmentController {
                     public void execute(Connection connection) throws SQLException {
                         PreparedStatement statement = connection.prepareStatement(sqlSelectQuery);
                         CallableStatement cs = connection.prepareCall("{call sp_scheduled_updates}");
-                        CallableStatement dataToolStatement = connection.prepareCall("{CALL create_datatools_tables}");
+                       // CallableStatement dataToolStatement = connection.prepareCall("{CALL create_datatools_tables}");
                         cs.execute();
-                        dataToolStatement.execute();
+                        //dataToolStatement.execute();
                         try {
 
                             ResultSet resultSet = statement.executeQuery();
@@ -227,10 +227,10 @@ public class EtlManagerFragmentController {
                         PreparedStatement statement = connection.prepareStatement(sqlSelectQuery);
                         CallableStatement dropTablesSP = connection.prepareCall("{call create_etl_tables}");
                         CallableStatement populateTableSP = connection.prepareCall("{call sp_first_time_setup}");
-                        CallableStatement dataToolStatement = connection.prepareCall("{CALL create_datatools_tables}");
+                        //CallableStatement dataToolStatement = connection.prepareCall("{CALL create_datatools_tables}");
                         dropTablesSP.execute();
                         populateTableSP.execute();
-                        dataToolStatement.execute();
+                        //dataToolStatement.execute();
                         try {
 
                             ResultSet resultSet = statement.executeQuery();

@@ -41,6 +41,7 @@ p.death_date
 from person p
 left join patient pa on pa.patient_id=p.person_id
 left join person_name pn on pn.person_id = p.person_id and pn.voided=0
+where p.voided=0
 GROUP BY p.person_id
 ) p
 ON DUPLICATE KEY UPDATE given_name = p.given_name, middle_name=p.middle_name, family_name=p.family_name;
@@ -2059,6 +2060,7 @@ max(if(o.concept_id=164952,(case o.value_coded when 1065 then "Yes" when 1066 th
 max(if(o.concept_id=163042,trim(o.value_text),null)) as remarks,
 e.voided
 from encounter e
+inner join person p on p.person_id=e.patient_id and p.voided=0
 inner join form f on f.form_id=e.form_id and f.uuid in ("402dc5d7-46da-42d4-b2be-f43ea4ad87b0","b08471f6-0892-4bf7-ab2b-bf79797b8ea4")
 inner join obs o on o.encounter_id = e.encounter_id and o.concept_id in (162084, 164930, 160581, 164401, 164951, 162558, 1710, 164959, 164956,
                                                                                  160540,159427, 164848, 6096, 1659, 164952, 163042, 159813)
@@ -2121,6 +2123,7 @@ INSERT INTO kenyaemr_etl.etl_hts_referral_and_linkage (
     max(if(o.concept_id=1473,trim(o.value_text),null)) as provider_handed_to,
     e.voided
   from encounter e
+  inner join person p on p.person_id=e.patient_id and p.voided=0
   inner join form f on f.form_id = e.form_id and f.uuid = "050a7f12-5c52-4cad-8834-863695af335d"
   left outer join obs o on o.encounter_id = e.encounter_id and o.concept_id in (164966, 159811, 162724, 162053, 1473) and o.voided=0
   group by e.encounter_id;
