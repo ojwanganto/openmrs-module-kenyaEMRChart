@@ -180,7 +180,7 @@ public class OdooWrapper<T> {
     }
 
     private void newJSONPOSTRequest(final String url, JSONObject params,
-                                    IOdooResponse odooResponse) {
+                                    IOdooResponse odooResponse, OdooSyncResponse backResponse) {
         OdooLog.d("REQUEST URL : " + url);
         final JSONObject postData = createRequestWrapper(params, odooResponse);
         OdooLog.d("POST DATA: " + postData);
@@ -333,8 +333,7 @@ public class OdooWrapper<T> {
 
     private void requestController(String fullURL, JSONObject data, IOdooResponse callback,
                                    OdooSyncResponse backResponse) {
-        //newJSONPOSTRequest(fullURL, data, callback, backResponse);
-        newJSONPOSTRequest(fullURL, data, callback);
+        newJSONPOSTRequest(fullURL, data, callback, backResponse);
     }
 
     private JSONObject createRequestWrapper(JSONObject params, IOdooResponse callback) {
@@ -395,8 +394,7 @@ public class OdooWrapper<T> {
             public void onError(OdooError error) {
                 res.onError(error);
             }
-       // }, backResponse);
-        });
+        }, backResponse);
     }
 
     public OdooResult getSessionInfo() {
@@ -427,8 +425,7 @@ public class OdooWrapper<T> {
                 if (callback != null)
                     callback.onError(error);
             }
-       // }, backResponse);
-        });
+        }, backResponse);
     }
 
 
@@ -511,8 +508,7 @@ public class OdooWrapper<T> {
                                 mIOdooConnectionListener.onError(error);
                             }
                         }
-                    //}, backResponse);
-                    });
+                    }, backResponse);
                 }
             }
         } catch (Exception e) {
@@ -578,8 +574,7 @@ public class OdooWrapper<T> {
                 public void onError(OdooError error) {
                     callback.onLoginFail(error);
                 }
-            //}, backResponse);
-            });
+            }, backResponse);
         } catch (Exception e) {
             OdooLog.e(e, e.getMessage());
         }
@@ -715,8 +710,7 @@ public class OdooWrapper<T> {
             params.put("offset", offset);
             params.put("limit", limit);
             params.put("sort", (sort == null) ? "" : sort);
-            //newJSONPOSTRequest(url, params, callback, backResponse);
-            newJSONPOSTRequest(url, params, callback);
+            newJSONPOSTRequest(url, params, callback, backResponse);
         } catch (Exception e) {
             OdooLog.e(e, e.getMessage());
         }
@@ -740,8 +734,7 @@ public class OdooWrapper<T> {
             params.put("model", model);
             params.put("id", id);
             params.put("signal", signal);
-            //newJSONPOSTRequest(url, params, callback, backResponse);
-            newJSONPOSTRequest(url, params, callback);
+            newJSONPOSTRequest(url, params, callback, backResponse);
         } catch (Exception e) {
             OdooLog.e(e, e.getMessage());
         }
@@ -787,8 +780,7 @@ public class OdooWrapper<T> {
             JSONObject kwargs = new JSONObject();
             kwargs.put("context", odooSession.getUserContext());
             params.put("kwargs", kwargs);
-            //newJSONPOSTRequest(url, params, callback, backResponse);
-            newJSONPOSTRequest(url, params, callback);
+            newJSONPOSTRequest(url, params, callback, backResponse);
         } catch (Exception e) {
             OdooLog.e(e, e.getMessage());
         }
@@ -851,8 +843,7 @@ public class OdooWrapper<T> {
             params.put("context", (context != null) ?
                     new JSONObject(gson.toJson(updateContext(context)))
                     : odooSession.getUserContext());
-            //newJSONPOSTRequest(url, params, callback, backResponse);
-            newJSONPOSTRequest(url, params, callback);
+            newJSONPOSTRequest(url, params, callback, backResponse);
         } catch (Exception e) {
             OdooLog.e(e, e.getMessage());
         }
@@ -1096,7 +1087,7 @@ public class OdooWrapper<T> {
      *
      * @param response request response
      */
-    /*@Override*/
+   // @Override
     public void onResponse(JSONObject response) {
         OdooLog.d("RESPONSE:" + response);
         OdooResponse responseMap = parseToResponse(response);
