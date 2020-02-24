@@ -19,7 +19,7 @@
  */
 package org.openmrs.module.kenyaemrCharts.odoo.core.orm;
 
-import android.content.Context;
+/*import android.content.Context;
 import android.content.Intent;
 import android.content.SyncResult;
 import android.database.Cursor;
@@ -50,7 +50,20 @@ import com.odoo.core.utils.OCursorUtils;
 import com.odoo.core.utils.ODateUtils;
 import com.odoo.core.utils.OListUtils;
 import com.odoo.core.utils.OStorageUtils;
-import com.odoo.core.utils.StringUtils;
+import com.odoo.core.utils.StringUtils;*/
+
+import liquibase.database.core.SQLiteDatabase;
+import org.openmrs.module.kenyaemrCharts.odoo.core.orm.annotation.Odoo;
+import org.openmrs.module.kenyaemrCharts.odoo.core.orm.fields.OColumn;
+import org.openmrs.module.kenyaemrCharts.odoo.core.orm.fields.types.OBoolean;
+import org.openmrs.module.kenyaemrCharts.odoo.core.orm.fields.types.ODateTime;
+import org.openmrs.module.kenyaemrCharts.odoo.core.orm.fields.types.OInteger;
+import org.openmrs.module.kenyaemrCharts.odoo.core.orm.fields.types.OSelection;
+import org.openmrs.module.kenyaemrCharts.odoo.core.rpc.helper.ODomain;
+import org.openmrs.module.kenyaemrCharts.odoo.core.rpc.helper.OdooVersion;
+import org.openmrs.module.kenyaemrCharts.odoo.core.service.ISyncServiceListener;
+import org.openmrs.module.kenyaemrCharts.odoo.core.support.OUser;
+import org.openmrs.module.kenyaemrCharts.odoo.core.utils.ODateUtils;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -74,16 +87,16 @@ import java.util.Locale;
 public class OModel implements ISyncServiceListener {
 
     public static final String TAG = OModel.class.getSimpleName();
-    private String BASE_AUTHORITY = BuildConfig.APPLICATION_ID + ".core.provider.content";
+    private String BASE_AUTHORITY = 10 + ".core.provider.content";
     public static final int INVALID_ROW_ID = -1;
-    private OSQLite sqLite = null;
-    private Context mContext;
+/*    private OSQLite sqLite = null;
+    private Context mContext;*/
     private OUser mUser;
     private String model_name = null;
-    private List<OColumn> mColumns = new ArrayList<>();
-    private List<OColumn> mRelationColumns = new ArrayList<>();
-    private List<OColumn> mFunctionalColumns = new ArrayList<>();
-    private HashMap<String, Field> mDeclaredFields = new HashMap<>();
+    private List<OColumn> mColumns = new ArrayList<OColumn>();
+    private List<OColumn> mRelationColumns = new ArrayList<OColumn>();
+    private List<OColumn> mFunctionalColumns = new ArrayList<OColumn>();
+    private HashMap<String, Field> mDeclaredFields = new HashMap<String, Field>();
     private OdooVersion mOdooVersion = null;
     private String default_name_column = "name";
     private boolean hasMailChatter = false;
@@ -108,11 +121,11 @@ public class OModel implements ISyncServiceListener {
     OColumn _is_dirty = new OColumn("Dirty record", OBoolean.class).setDefaultValue(false).setLocalColumn();
     OColumn _is_active = new OColumn("Active Record", OBoolean.class).setDefaultValue(true).setLocalColumn();
 
-    public OModel(Context context, String model_name, OUser user) {
-        mContext = context;
-        mUser = (user == null) ? OUser.current(context) : user;
+    public OModel(String model_name, OUser user) {
+       /* mContext = context;
+        mUser = (user == null) ? OUser.current(context) : user;*/
         this.model_name = model_name;
-        if (mUser != null) {
+        /*if (mUser != null) {
             mOdooVersion = mUser.getOdooVersion();
 
             sqLite = App.getSQLite(mUser.getAndroidName());
@@ -120,27 +133,23 @@ public class OModel implements ISyncServiceListener {
                 sqLite = new OSQLite(mContext, mUser);
                 App.setSQLite(mUser.getAndroidName(), sqLite);
             }
-        }
+        }*/
     }
 
     public SQLiteDatabase getReadableDatabase() {
-        return sqLite.getReadableDatabase();
+        return null;
     }
 
     public SQLiteDatabase getWritableDatabase() {
-        return sqLite.getWritableDatabase();
+        return null;
     }
 
     public String getDatabaseName() {
-        return sqLite.getDatabaseName();
+        return null;
     }
 
     public void onModelUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // Override in model
-    }
-
-    public Context getContext() {
-        return mContext;
     }
 
     public void close() {
@@ -185,7 +194,9 @@ public class OModel implements ISyncServiceListener {
 
     public List<OColumn> getColumns(Boolean local) {
         if (local != null) {
-            List<OColumn> cols = new ArrayList<>();
+            List<OColumn> cols = new ArrayList<OColumn>(
+
+            );
             for (OColumn column : getColumns())
                 if (local == column.isLocal())
                     cols.add(column);
@@ -250,7 +261,7 @@ public class OModel implements ISyncServiceListener {
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-                Log.e(TAG, e.getMessage());
+               // Log.e(TAG, e.getMessage());
             }
         }
         return null;
@@ -284,7 +295,7 @@ public class OModel implements ISyncServiceListener {
             try {
                 return getClass().getMethod(method_name, ODataRow.class);
             } catch (NoSuchMethodException e) {
-                Log.e(TAG, "No Such Method: " + e.getMessage());
+                //Log.e(TAG, "No Such Method: " + e.getMessage());
             }
         }
         return null;
@@ -332,7 +343,7 @@ public class OModel implements ISyncServiceListener {
                 else
                     return getClass().getMethod(method_name, ODataRow.class);
             } catch (NoSuchMethodException e) {
-                Log.e(TAG, "No Such Method: " + e.getMessage());
+                //Log.e(TAG, "No Such Method: " + e.getMessage());
             }
         }
         return null;
@@ -393,7 +404,7 @@ public class OModel implements ISyncServiceListener {
     private void prepareFields() {
         mColumns.clear();
         mRelationColumns.clear();
-        List<Field> fields = new ArrayList<>();
+        List<Field> fields = new ArrayList<Field>();
         fields.addAll(Arrays.asList(getClass().getSuperclass().getDeclaredFields()));
         fields.addAll(Arrays.asList(getClass().getDeclaredFields()));
         mDeclaredFields.clear();
@@ -435,7 +446,7 @@ public class OModel implements ISyncServiceListener {
     }
 
     public List<OColumn> getManyToManyColumns(OColumn column, OModel relation_model) {
-        List<OColumn> cols = new ArrayList<>();
+        List<OColumn> cols = new ArrayList<OColumn>();
         _write_date.setName("_write_date");
         cols.add(_write_date);
         _is_dirty.setName("_is_dirty");
@@ -456,8 +467,8 @@ public class OModel implements ISyncServiceListener {
 
     public OModel createInstance(Class<?> type) {
         try {
-            Constructor<?> constructor = type.getConstructor(Context.class, OUser.class);
-            return (OModel) constructor.newInstance(mContext, mUser);
+            Constructor<?> constructor = type.getConstructor(OUser.class);
+            return (OModel) constructor.newInstance(mUser);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -472,16 +483,15 @@ public class OModel implements ISyncServiceListener {
         return getModelName();
     }
 
-    public static OModel get(Context context, String model_name, String username) {
-        OUser user = OdooAccountManager.getDetails(context, username);
-        return App.getModel(context, model_name, user);
+    public static OModel get(String model_name, String username) {
+        return null;
     }
 
     public String authority() {
         return BASE_AUTHORITY;
     }
 
-    public Uri buildURI(String authority) {
+    /*public Uri buildURI(String authority) {
         BASE_AUTHORITY = authority;
         String path = getModelName().toLowerCase(Locale.getDefault());
         return BaseModelProvider.buildURI(BASE_AUTHORITY, path, mUser.getAndroidName());
@@ -490,14 +500,14 @@ public class OModel implements ISyncServiceListener {
     public Uri uri() {
         String path = getModelName().toLowerCase(Locale.getDefault());
         return BaseModelProvider.buildURI(BASE_AUTHORITY, path, mUser.getAndroidName());
-    }
+    }*/
 
     public ODomain defaultDomain() {
         return new ODomain();
     }
 
     private String[] updateProjection(String[] projection) {
-        HashSet<String> names = new HashSet<>();
+        HashSet<String> names = new HashSet<String>();
         String[] allProjection = projection;
         if (allProjection == null) {
             allProjection = projection();
@@ -515,7 +525,7 @@ public class OModel implements ISyncServiceListener {
     }
 
     public String[] projection(Boolean onlyServerColumns) {
-        List<String> names = new ArrayList<>();
+        List<String> names = new ArrayList<String>();
         for (OColumn column : getColumns(false)) {
             if (column.getRelationType() == null || column.canFunctionalStore()) {
                 names.add(column.getName());
@@ -527,7 +537,7 @@ public class OModel implements ISyncServiceListener {
     }
 
     public String[] projection() {
-        List<String> names = new ArrayList<>();
+        List<String> names = new ArrayList<String>();
         for (OColumn column : getColumns()) {
             if (column.getRelationType() == null || column.canFunctionalStore()) {
                 names.add(column.getName());
@@ -594,7 +604,7 @@ public class OModel implements ISyncServiceListener {
     }
 
     public List<Integer> getServerIds() {
-        List<Integer> ids = new ArrayList<>();
+        List<Integer> ids = new ArrayList<Integer>();
         for (ODataRow row : select(new String[]{"id"})) {
             if (row.getInt("id") != 0) {
                 ids.add(row.getInt("id"));
@@ -608,21 +618,7 @@ public class OModel implements ISyncServiceListener {
     }
 
     public String getLastSyncDateTime() {
-        IrModel model = new IrModel(mContext, mUser);
-        List<ODataRow> records = model.select(null, "model = ?", new String[]{getModelName()});
-        if (records.size() > 0) {
-            String date = records.get(0).getString("last_synced");
-            Date write_date = ODateUtils.createDateObject(date, ODateUtils.DEFAULT_FORMAT, true);
-            Calendar cal = Calendar.getInstance();
-            cal.setTime(write_date);
-            /*
-                Fixed for Postgres SQL
-                It stores milliseconds so comparing date wrong. 
-             */
-            cal.set(Calendar.SECOND, cal.get(Calendar.SECOND) + 2);
-            write_date = cal.getTime();
-            return ODateUtils.getDate(write_date, ODateUtils.DEFAULT_FORMAT);
-        }
+
         return null;
     }
 
@@ -639,55 +635,7 @@ public class OModel implements ISyncServiceListener {
     }
 
     public List<ODataRow> select(String[] projection, String where, String[] args, String sortOrder) {
-        Cursor cr = mContext.getContentResolver().query(uri(),
-                updateProjection(projection), where, args, sortOrder);
-        List<ODataRow> rows = new ArrayList<>();
-        try {
-            if (cr != null && cr.moveToFirst()) {
-                do {
-                    ODataRow row = OCursorUtils.toDatarow(cr);
-                    for (OColumn column : getRelationColumns(projection)) {
-                        if (!row.getString(column.getName()).equals("false")
-                                || column.getRelationType() == OColumn.RelationType.OneToMany
-                                || column.getRelationType() == OColumn.RelationType.ManyToMany) {
-                            switch (column.getRelationType()) {
-                                case ManyToMany:
-                                    OM2MRecord m2mRecords = new OM2MRecord(this, column, row.getInt(OColumn.ROW_ID));
-                                    row.put(column.getName(), m2mRecords);
-                                    break;
-                                case ManyToOne:
-                                    OM2ORecord m2ORecord = new OM2ORecord(this, column, row.getInt(column.getName()));
-                                    row.put(column.getName(), m2ORecord);
-                                    break;
-                                case OneToMany:
-                                    OO2MRecord o2MRecord = new OO2MRecord(this, column, row.getInt(OColumn.ROW_ID));
-                                    row.put(column.getName(), o2MRecord);
-                                    break;
-                            }
-                        }
-                    }
-                    for (OColumn column : getFunctionalColumns(projection)) {
-                        List<String> depends = column.getFunctionalStoreDepends();
-                        if (depends != null && depends.size() > 0) {
-                            ODataRow values = new ODataRow();
-                            for (String depend : depends) {
-                                if (row.contains(depend)) {
-                                    values.put(depend, row.get(depend));
-                                }
-                            }
-                            if (values.size() == depends.size()) {
-                                Object value = getFunctionalMethodValue(column, values);
-                                row.put(column.getName(), value);
-                            }
-                        }
-                    }
-                    rows.add(row);
-                } while (cr.moveToNext());
-            }
-        } finally {
-            if (cr != null) cr.close();
-        }
-        return rows;
+        return null;
     }
 
     public Object getFunctionalMethodValue(OColumn column, Object record) {
@@ -715,7 +663,7 @@ public class OModel implements ISyncServiceListener {
     }
 
     private List<OColumn> getFunctionalColumns(String[] projection) {
-        List<OColumn> cols = new ArrayList<>();
+        List<OColumn> cols = new ArrayList<OColumn>();
         if (projection != null) {
             for (String key : projection) {
                 OColumn column = getColumn(key);
@@ -733,7 +681,7 @@ public class OModel implements ISyncServiceListener {
     }
 
     private List<OColumn> getRelationColumns(String[] projection) {
-        List<OColumn> cols = new ArrayList<>();
+        List<OColumn> cols = new ArrayList<OColumn>();
         if (projection != null) {
             for (String key : projection) {
                 OColumn column = getColumn(key);
@@ -768,15 +716,7 @@ public class OModel implements ISyncServiceListener {
 
     public int selectRowId(String selection, String[] args) {
         int row_id = INVALID_ROW_ID;
-        SQLiteDatabase db = getReadableDatabase();
-        Cursor cr = db.query(getTableName(), new String[]{OColumn.ROW_ID}, selection, args, null, null, null);
-        try {
-            if (cr.moveToFirst()) {
-                row_id = cr.getInt(0);
-            }
-        } finally {
-            cr.close();
-        }
+
         return row_id;
     }
 
@@ -793,10 +733,7 @@ public class OModel implements ISyncServiceListener {
     }
 
     public int insert(OValues values) {
-        Uri uri = mContext.getContentResolver().insert(uri(), values.toContentValues());
-        if (uri != null) {
-            return Integer.parseInt(uri.getLastPathSegment());
-        }
+
         return INVALID_ROW_ID;
     }
 
@@ -818,15 +755,7 @@ public class OModel implements ISyncServiceListener {
 
 
     public int deleteRecords(List<Integer> serverIds, boolean permanently) {
-        String selection = "id IN (" + StringUtils.repeat("?, ", serverIds.size() - 1) + " ?)";
-        String[] args = OListUtils.toStringList(serverIds).toArray(new String[serverIds.size()]);
-        if (permanently) {
-            return delete(selection, args, true);
-        } else {
-            OValues values = new OValues();
-            values.put("_is_active", "false");
-            return update(selection, args, values);
-        }
+        return 0;
     }
 
     public int delete(String selection, String[] args) {
@@ -835,19 +764,7 @@ public class OModel implements ISyncServiceListener {
 
     public int delete(String selection, String[] args, boolean permanently) {
         int count = 0;
-        if (permanently) {
-            count = mContext.getContentResolver().delete(uri(), selection, args);
-        } else {
-            List<ODataRow> records = select(new String[]{"_is_active"}, selection, args);
-            for (ODataRow row : records) {
-                if (row.getBoolean("_is_active")) {
-                    OValues values = new OValues();
-                    values.put("_is_active", "false");
-                    update(row.getInt(OColumn.ROW_ID), values);
-                }
-                count++;
-            }
-        }
+
         return count;
     }
 
@@ -857,25 +774,17 @@ public class OModel implements ISyncServiceListener {
 
     public boolean delete(int row_id, boolean permanently) {
         int count = 0;
-        if (permanently)
-            count = mContext.getContentResolver().delete(Uri.withAppendedPath(uri(), row_id + ""), null, null);
-        else {
-            OValues values = new OValues();
-            values.put("_is_active", "false");
-            update(row_id, values);
-            count++;
-        }
         return count > 0;
     }
 
     public int update(String selection, String[] args, OValues values) {
-        return mContext.getContentResolver().update(uri(), values.toContentValues(), selection, args);
+        return 0;
     }
 
     public boolean update(int row_id, OValues values) {
-        int count = mContext.getContentResolver().update(Uri.withAppendedPath(uri(), row_id + ""),
-                values.toContentValues(), null, null);
-        return count > 0;
+        /*int count = mContext.getContentResolver().update(Uri.withAppendedPath(uri(), row_id + ""),
+                values.toContentValues(), null, null);*/
+        return 0 > 0;
     }
 
 
@@ -884,46 +793,19 @@ public class OModel implements ISyncServiceListener {
     }
 
     public List<ODataRow> query(String query, String[] args) {
-        List<ODataRow> rows = new ArrayList<>();
-        SQLiteDatabase db = getReadableDatabase();
-        Cursor cr = db.rawQuery(query, args);
-        try {
-            if (cr.moveToFirst()) {
-                do {
-                    rows.add(OCursorUtils.toDatarow(cr));
-                } while (cr.moveToNext());
-            }
-        } finally {
-            cr.close();
-        }
-        return rows;
+        return null;
 
     }
 
     public int count(String selection, String[] args) {
         int count = 0;
-        SQLiteDatabase db = getReadableDatabase();
-        Cursor cr = db.query(getTableName(), new String[]{"count(*)"}, selection, args, null, null, null);
-        try {
-            cr.moveToFirst();
-            count = cr.getInt(0);
-        } finally {
-            cr.close();
-        }
+
         return count;
     }
 
 
-    /**
-     * Handle record values for insert, update, delete operation with relation columns
-     * Each record have different behaviour, appending, deleting, unlink reference and
-     * replacing with new list
-     *
-     * @param record_id Main record id on which relation values affected
-     * @param column    column object of the record (for relation column only)
-     * @param values    values list with commands (@see RelCommands)
-     */
-    public void handleRelationValues(int record_id, OColumn column, RelValues values) {
+
+    /*public void handleRelationValues(int record_id, OColumn column, RelValues values) {
         OModel relModel = createInstance(column.getType());
         HashMap<RelCommands, List<Object>> columnValues = values.getColumnValues();
         for (RelCommands commands : columnValues.keySet()) {
@@ -937,8 +819,8 @@ public class OModel implements ISyncServiceListener {
             }
         }
     }
-
-    private void handleOneToManyRecords(OColumn column, RelCommands commands, OModel relModel,
+*/
+    /*private void handleOneToManyRecords(OColumn column, RelCommands commands, OModel relModel,
                                         int record_id, HashMap<RelCommands, List<Object>> values) {
         if (commands == RelCommands.Replace) {
             // Force to unlink record even no any other record values available.
@@ -987,8 +869,8 @@ public class OModel implements ISyncServiceListener {
             }
         }
     }
-
-    private void handleManyToManyRecords(OColumn column, RelCommands command, OModel relModel,
+*/
+    /*private void handleManyToManyRecords(OColumn column, RelCommands command, OModel relModel,
                                          int record_id, HashMap<RelCommands, List<Object>> values) {
 
         String table = column.getRelTableName() != null ? column.getRelTableName() :
@@ -1050,8 +932,8 @@ public class OModel implements ISyncServiceListener {
         values.remove(command);
         db.close();
     }
-
-    public List<ODataRow> selectManyToManyRecords(String[] projection, String column_name, int row_id) {
+*/
+   /* public List<ODataRow> selectManyToManyRecords(String[] projection, String column_name, int row_id) {
         OColumn column = getColumn(column_name);
         OModel rel_model = createInstance(column.getType());
         String table = column.getRelTableName() != null ? column.getRelTableName() :
@@ -1082,12 +964,12 @@ public class OModel implements ISyncServiceListener {
                 ids.toArray(new String[ids.size()]));
         rel_model.close();
         return data;
-    }
+    }*/
 
-    public ServerDataHelper getServerDataHelper() {
+    /*public ServerDataHelper getServerDataHelper() {
         return new ServerDataHelper(mContext, this, getUser());
     }
-
+*/
     public String getName(int row_id) {
         ODataRow row = browse(row_id);
         if (row != null) {
@@ -1097,22 +979,23 @@ public class OModel implements ISyncServiceListener {
     }
 
     public void quickSyncRecords(ODomain domain) {
-        OSyncAdapter syncAdapter = new OSyncAdapter(mContext, getClass(), null, true);
+        /*OSyncAdapter syncAdapter = new OSyncAdapter(mContext, getClass(), null, true);
         syncAdapter.setModel(this);
         syncAdapter.setDomain(domain);
         syncAdapter.checkForWriteCreateDate(false);
         syncAdapter.onPerformSync(getUser().getAccount(), null, authority(), null, new SyncResult());
-    }
+*/    }
 
     public ODataRow quickCreateRecord(ODataRow record) {
-        OSyncAdapter syncAdapter = new OSyncAdapter(mContext, getClass(), null, true);
+        /*OSyncAdapter syncAdapter = new OSyncAdapter(mContext, getClass(), null, true);
         syncAdapter.setModel(this);
         ODomain domain = new ODomain();
         domain.add("id", "=", record.getFloat("id").intValue());
         syncAdapter.setDomain(domain);
         syncAdapter.checkForWriteCreateDate(false);
         syncAdapter.onPerformSync(getUser().getAccount(), null, authority(), null, new SyncResult());
-        return browse(null, "id = ?", new String[]{record.getString("id")});
+        return browse(null, "id = ?", new String[]{record.getString("id")});*/
+    return null;
     }
 
     public ODataRow countGroupBy(String column, String group_by, String having, String[] args) {
@@ -1128,7 +1011,7 @@ public class OModel implements ISyncServiceListener {
         }
     }
 
-    public void isInstalledOnServer(final String module_name, IModuleInstallListener callback) {
+    /*public void isInstalledOnServer(final String module_name, IModuleInstallListener callback) {
         App app = (App) mContext.getApplicationContext();
         app.getOdoo(getUser()).installedOnServer(module_name, new IModuleInstallListener() {
             @Override
@@ -1141,13 +1024,15 @@ public class OModel implements ISyncServiceListener {
                 model.insertOrUpdate("name = ?", new String[]{module_name}, values);
             }
         });
-    }
+    }*/
 
+/*
     public String getDatabaseLocalPath() {
         return sqLite.databaseLocalPath();
     }
+*/
 
-    public void exportDB() {
+    /*public void exportDB() {
         FileChannel source;
         FileChannel destination;
         String currentDBPath = getDatabaseLocalPath();
@@ -1171,7 +1056,7 @@ public class OModel implements ISyncServiceListener {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
+    }*/
 
     @Override
     public void onSyncStarted() {
@@ -1193,7 +1078,9 @@ public class OModel implements ISyncServiceListener {
         // Will be over ride by extending model
     }
 
+/*
     public SyncUtils sync() {
         return SyncUtils.get(mContext);
     }
+*/
 }

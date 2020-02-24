@@ -39,7 +39,7 @@ public class OdooResult extends TreeMap<String, Object> {
     }
 
     public List<OdooRecord> getRecords() {
-        List<OdooRecord> records = new ArrayList<>();
+        List<OdooRecord> records = new ArrayList<OdooRecord>();
         if (has("records")) {
             records = getArray("records");
         }

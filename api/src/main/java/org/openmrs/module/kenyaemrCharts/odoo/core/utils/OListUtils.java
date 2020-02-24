@@ -27,7 +27,7 @@ public class OListUtils {
 
 
     public static List<Integer> doubleToIntList(List<Double> list) {
-        List<Integer> vals = new ArrayList<>();
+        List<Integer> vals = new ArrayList<Integer>();
         for (Double val : list) {
             vals.add(val.intValue());
         }
@@ -35,7 +35,7 @@ public class OListUtils {
     }
 
     public static List<String> toStringList(List<Integer> list) {
-        List<String> items = new ArrayList<>();
+        List<String> items = new ArrayList<String>();
         for (Integer item : list) {
             items.add(item + "");
         }

@@ -19,13 +19,10 @@
  */
 package org.openmrs.module.kenyaemrCharts.odoo.core.rpc.helper;
 
-import android.util.Log;
-
-import com.odoo.core.orm.fields.OColumn;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.openmrs.module.kenyaemrCharts.odoo.core.orm.fields.OColumn;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +32,7 @@ public class OdooFields {
     private JSONObject jFields = new JSONObject();
 
     public OdooFields(List<OColumn> columns) {
-        List<String> fields = new ArrayList<>();
+        List<String> fields = new ArrayList<String>();
         if (columns != null) {
             for (OColumn column : columns) {
                 if (!column.isLocal() && !column.isFunctionalColumn()) {
@@ -69,7 +66,7 @@ public class OdooFields {
             try {
                 return jFields.getJSONArray("fields");
             } catch (JSONException e) {
-                Log.d(TAG, e.getMessage());
+                //Log.d(TAG, e.getMessage());
             }
         }
         return new JSONArray();
@@ -80,7 +77,7 @@ public class OdooFields {
             try {
                 jFields.put("fields", new JSONArray());
             } catch (JSONException e) {
-                Log.d(TAG, e.getMessage());
+               // Log.d(TAG, e.getMessage());
             }
         }
         return jFields;

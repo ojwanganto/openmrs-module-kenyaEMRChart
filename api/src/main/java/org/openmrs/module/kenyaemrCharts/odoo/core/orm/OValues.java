@@ -19,12 +19,12 @@
  */
 package org.openmrs.module.kenyaemrCharts.odoo.core.orm;
 
-import android.content.ContentValues;
+/*import android.content.ContentValues;
 import android.os.Bundle;
 
 import com.odoo.core.orm.fields.OColumn;
 import com.odoo.core.orm.fields.utils.DomainFilterParser;
-import com.odoo.core.utils.OObjectUtils;
+import com.odoo.core.utils.OObjectUtils;*/
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -34,25 +34,23 @@ import java.util.List;
 
 public class OValues implements Serializable {
     public static final String TAG = OValues.class.getSimpleName();
-    private HashMap<String, Object> _values = new HashMap<>();
+    private HashMap<String, Object> _values = new HashMap<String, Object>();
 
     public OValues() {
         _values.clear();
-        _values = new HashMap<>();
+        _values = new HashMap<String, Object>();
     }
 
     public void put(String key, Object value) {
         _values.put(key, value);
     }
 
-    /**
-     * Used for adding chained records (ids or OValues) for relation column M2M and O2M
-     *
-     * @param values Relation records
-     */
+
+/*
     public void put(String key, RelValues values) {
         _values.put(key, values);
     }
+*/
 
     public Object get(String key) {
         return _values.get(key);
@@ -85,7 +83,7 @@ public class OValues implements Serializable {
     }
 
     public List<String> keys() {
-        List<String> list = new ArrayList<>();
+        List<String> list = new ArrayList<String>();
         list.addAll(_values.keySet());
         return list;
     }
@@ -110,7 +108,7 @@ public class OValues implements Serializable {
         return row;
     }
 
-    public ContentValues toContentValues() {
+   /* public ContentValues toContentValues() {
         ContentValues values = new ContentValues();
         for (String key : _values.keySet()) {
             Object val = _values.get(key);
@@ -137,20 +135,20 @@ public class OValues implements Serializable {
         }
         return values;
     }
-
+*/
     public void addAll(HashMap<String, Object> data) {
         _values.putAll(data);
     }
 
-    public static OValues from(ContentValues contentValues) {
+   /* public static OValues from(ContentValues contentValues) {
         OValues values = new OValues();
         for (String key : contentValues.keySet()) {
             values.put(key, contentValues.get(key));
         }
         return values;
-    }
+    }*/
 
-    public Bundle toFilterColumnsBundle(OModel model, OColumn column) {
+    /*public Bundle toFilterColumnsBundle(OModel model, OColumn column) {
         Bundle data = new Bundle();
         if (column.hasDomainFilterColumn()) {
             DomainFilterParser parser = column.getDomainFilterParser(model);
@@ -174,5 +172,5 @@ public class OValues implements Serializable {
             }
         }
         return data;
-    }
+    }*/
 }

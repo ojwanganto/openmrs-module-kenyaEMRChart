@@ -19,24 +19,7 @@
  */
 package org.openmrs.module.kenyaemrCharts.odoo.core.service;
 
-import android.content.Context;
-import android.content.SyncResult;
-import android.util.Log;
 
-import com.odoo.core.orm.ODataRow;
-import com.odoo.core.orm.OModel;
-import com.odoo.core.orm.OValues;
-import com.odoo.core.orm.fields.OColumn;
-import com.odoo.core.rpc.Odoo;
-import com.odoo.core.rpc.helper.ODomain;
-import com.odoo.core.rpc.helper.OdooFields;
-import com.odoo.core.rpc.helper.utils.gson.OdooRecord;
-import com.odoo.core.rpc.helper.utils.gson.OdooResult;
-import com.odoo.core.support.OUser;
-import com.odoo.core.utils.ODateUtils;
-import com.odoo.core.utils.OListUtils;
-import com.odoo.core.utils.OdooRecordUtils;
-import com.odoo.core.utils.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -45,7 +28,7 @@ import java.util.HashSet;
 import java.util.List;
 
 public class OSyncDataUtils {
-    public static final String TAG = OSyncDataUtils.class.getSimpleName();
+    /*public static final String TAG = OSyncDataUtils.class.getSimpleName();
     private Context mContext;
     private OModel mModel;
     private OUser mUser;
@@ -434,5 +417,5 @@ public class OSyncDataUtils {
         }
     }
 
-
+*/
 }

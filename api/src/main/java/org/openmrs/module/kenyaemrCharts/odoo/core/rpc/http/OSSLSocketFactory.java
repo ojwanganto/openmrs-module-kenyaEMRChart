@@ -62,7 +62,7 @@ public class OSSLSocketFactory extends SSLSocketFactory {
     public OSSLSocketFactory(SSLContext context)
             throws KeyManagementException, NoSuchAlgorithmException,
             KeyStoreException, UnrecoverableKeyException {
-        super(null);
+        super(context);
         sslContext = context;
     }
 

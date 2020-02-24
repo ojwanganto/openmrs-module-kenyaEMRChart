@@ -8,7 +8,7 @@ import java.util.List;
 
 public abstract class OdooRecord<K, V> extends AbstractMap<K, V> {
 
-    public List<OdooRecord> records = new ArrayList<>();
+    public List<OdooRecord> records = new ArrayList<OdooRecord>();
 
     public String getString(String key) {
         if (containsKey(key))
@@ -29,13 +29,14 @@ public abstract class OdooRecord<K, V> extends AbstractMap<K, V> {
     }
 
     public OdooRecord getM20(String key) {
-        if (!getString(key).equals("false")) {
+        /*if (!getString(key).equals("false")) {
+            //OdooRecord rec = new LinkedTreeMap();
             OdooRecord rec = new LinkedTreeMap();
             List<Object> value = getArray(key);
             rec.put("id", value.get(0));
             rec.put("name", value.get(1));
             return rec;
-        }
+        }*/
         return null;
     }
 
@@ -47,7 +48,7 @@ public abstract class OdooRecord<K, V> extends AbstractMap<K, V> {
         if (!getString(key).equals("false")) {
             return getArray(key);
         }
-        return new ArrayList<>();
+        return new ArrayList<Integer>();
     }
 
     public <T> List<T> getArray(String key) {

@@ -19,8 +19,6 @@
  */
 package org.openmrs.module.kenyaemrCharts.odoo.core.utils;
 
-import android.util.Log;
-
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -163,7 +161,7 @@ public class ODateUtils {
             }
             dateObj = simpleDateFormat.parse(date);
         } catch (Exception e) {
-            Log.e(TAG, e.getMessage());
+            //Log.e(TAG, e.getMessage());
         }
         return dateObj;
     }

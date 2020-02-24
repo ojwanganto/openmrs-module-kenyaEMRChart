@@ -19,9 +19,11 @@
  */
 package org.openmrs.module.kenyaemrCharts.odoo.core.orm.fields;
 
-import com.odoo.core.orm.OModel;
-import com.odoo.core.orm.annotation.Odoo;
-import com.odoo.core.orm.fields.utils.DomainFilterParser;
+
+
+import org.openmrs.module.kenyaemrCharts.odoo.core.orm.OModel;
+import org.openmrs.module.kenyaemrCharts.odoo.core.orm.annotation.Odoo;
+import org.openmrs.module.kenyaemrCharts.odoo.core.orm.fields.utils.DomainFilterParser;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -33,7 +35,7 @@ import java.util.List;
 public class OColumn {
     public static final String TAG = OColumn.class.getSimpleName();
     public static final String ROW_ID = "_id";
-    private LinkedHashMap<String, String> mSelectionMap = new LinkedHashMap<>();
+    private LinkedHashMap<String, String> mSelectionMap = new LinkedHashMap<String, String>();
     private Odoo.Domain domainFilter;
 
     public static enum RelationType {
@@ -49,7 +51,7 @@ public class OColumn {
     private Object defaultValue;
     private Boolean autoIncrement = false, required = false;
     private Boolean isLocalColumn = false;
-    private LinkedHashMap<String, ColumnDomain> columnDomains = new LinkedHashMap<>();
+    private LinkedHashMap<String, ColumnDomain> columnDomains = new LinkedHashMap<String, ColumnDomain>();
     private Integer condition_operator_index = 0;
     private Integer recordSyncLimit = 0;
 

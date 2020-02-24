@@ -1,23 +1,27 @@
 package org.openmrs.module.kenyaemrCharts.odoo.core.orm.fields.utils;
 
-import android.os.Bundle;
+/*import android.os.Bundle;
 
 import com.odoo.core.orm.OModel;
 import com.odoo.core.orm.fields.OColumn;
-import com.odoo.core.rpc.helper.ODomain;
+import com.odoo.core.rpc.helper.ODomain;*/
 
 import org.json.JSONArray;
+import org.openmrs.module.kenyaemrCharts.odoo.core.orm.OModel;
+import org.openmrs.module.kenyaemrCharts.odoo.core.orm.fields.OColumn;
+import org.openmrs.module.kenyaemrCharts.odoo.core.rpc.helper.ODomain;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 public class DomainFilterParser {
 
     private OModel baseModel;
     private OColumn baseColumn;
     private String domainString;
-    private LinkedHashMap<String, FilterDomain> filterColumnValues = new LinkedHashMap<>();
+    private LinkedHashMap<String, FilterDomain> filterColumnValues = new LinkedHashMap<String, FilterDomain>();
 
     public DomainFilterParser(OModel model, OColumn column, String domainString) {
         baseModel = model;
@@ -61,7 +65,7 @@ public class DomainFilterParser {
     }
 
     public List<String> getFilterColumns() {
-        return new ArrayList<>(filterColumnValues.keySet());
+        return new ArrayList<String>(filterColumnValues.keySet());
     }
 
     private void setValue(String key, Object value) {
@@ -72,13 +76,13 @@ public class DomainFilterParser {
         }
     }
 
-    public LinkedHashMap<String, OColumn.ColumnDomain> getDomain(Bundle formData) {
+    public LinkedHashMap<String, OColumn.ColumnDomain> getDomain(Map<String, Object> formData) {
         if (formData != null) {
             for (String key : formData.keySet()) {
                 setValue(key, formData.get(key));
             }
         }
-        LinkedHashMap<String, OColumn.ColumnDomain> domains = new LinkedHashMap<>();
+        LinkedHashMap<String, OColumn.ColumnDomain> domains = new LinkedHashMap<String, OColumn.ColumnDomain>();
         int i = 1;
         if (!baseColumn.getDomains().isEmpty()) {
             domains.put("condition_operator_#" + i, new OColumn.ColumnDomain("and"));
@@ -98,24 +102,24 @@ public class DomainFilterParser {
         return filterColumnValues.get(key);
     }
 
-    public ODomain getRPCDomain(Bundle formData) {
+    public ODomain getRPCDomain(Map<String, Object> formData) {
         ODomain domain = new ODomain();
 
         // All domains in infix format
-        LinkedHashMap<String, OColumn.ColumnDomain> domains = new LinkedHashMap<>();
+        LinkedHashMap<String, OColumn.ColumnDomain> domains = new LinkedHashMap<String, OColumn.ColumnDomain>();
         domains.putAll(baseColumn.getDomains());
         domains.putAll(getDomain(formData));
 
         // processing to convert in prefix
 
-        List<FilterDomain> priority = new ArrayList<>();
-        List<List<FilterDomain>> alternative = new ArrayList<>();
+        List<FilterDomain> priority = new ArrayList<FilterDomain>();
+        List<List<FilterDomain>> alternative = new ArrayList<List<FilterDomain>>();
         for (String key : domains.keySet()) {
             OColumn.ColumnDomain colDomain = domains.get(key);
             if (colDomain.getConditionalOperator() != null) {
                 if (colDomain.getConditionalOperator().equals("or")) {
-                    alternative.add(new ArrayList<>(priority));
-                    priority = new ArrayList<>();
+                    alternative.add(new ArrayList<FilterDomain>(priority));
+                    priority = new ArrayList<FilterDomain>();
                 }
             } else {
                 FilterDomain filterDomain = new FilterDomain();
@@ -126,9 +130,9 @@ public class DomainFilterParser {
             }
         }
         if (!priority.isEmpty()) {
-            alternative.add(new ArrayList<>(priority));
+            alternative.add(new ArrayList<FilterDomain>(priority));
         }
-        List<FilterDomain> newDomain = new ArrayList<>();
+        List<FilterDomain> newDomain = new ArrayList<FilterDomain>();
         FilterDomain or = new FilterDomain();
         or.operator_value = "or";
         for (int i = 0; i < alternative.size() - 1; i++) newDomain.add(or);
@@ -142,14 +146,14 @@ public class DomainFilterParser {
         // Creating domain
         for (FilterDomain filterDomain : newDomain) {
             if (filterDomain.operator_value != null) {
-                switch (filterDomain.operator_value) {
+                /*switch (filterDomain.operator_value) {
                     case "and":
                         domain.add("&");
                         break;
                     case "or":
                         domain.add("|");
                         break;
-                }
+                }*/
             } else {
                 Object value = filterDomain.value;
                 OColumn domainColumn = baseModel.getColumn(filterDomain.baseColumn);

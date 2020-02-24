@@ -1,6 +1,6 @@
 package org.openmrs.module.kenyaemrCharts.odoo.core.utils;
 
-import com.odoo.core.orm.ODataRow;
+
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -37,7 +37,7 @@ public class JSONUtils {
     }
 
     public static <T> List<T> toList(String list_data) {
-        List<T> list = new ArrayList<>();
+        List<T> list = new ArrayList<T>();
         try {
             list.addAll(JSONUtils.<T>toList(new JSONArray(list_data)));
         } catch (Exception e) {
@@ -46,7 +46,7 @@ public class JSONUtils {
         return list;
     }
 
-    public static ODataRow toDataRow(JSONObject json) {
+   /* public static ODataRow toDataRow(JSONObject json) {
         ODataRow row = new ODataRow();
         try {
             @SuppressWarnings("unchecked")
@@ -71,5 +71,5 @@ public class JSONUtils {
             e.printStackTrace();
         }
         return json;
-    }
+    }*/
 }

@@ -18,18 +18,17 @@
  */
 package org.openmrs.module.kenyaemrCharts.odoo.core.utils.logger;
 
-import android.text.TextUtils;
-import android.util.Log;
 
 public class OLog {
 
 	public static void log(String... messages) {
-		String message = TextUtils.join(", ", messages);
+		//String message = TextUtils.join(", ", messages);
+		String message = messages.toString();
 		final Throwable throwable = new Throwable();
 		final StackTraceElement[] elements = throwable.getStackTrace();
 		final String callerClassName = elements[1].getClassName();
 		final String callerMethodName = elements[1].getMethodName();
-		Log.e(callerClassName + "[" + callerMethodName + "] ", message);
+		//Log.e(callerClassName + "[" + callerMethodName + "] ", message);
 	}
 
 }

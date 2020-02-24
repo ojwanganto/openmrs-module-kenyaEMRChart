@@ -19,20 +19,17 @@
  */
 package org.openmrs.module.kenyaemrCharts.odoo.core.orm;
 
-import android.os.Bundle;
-import android.os.Parcel;
-import android.os.Parcelable;
 
-import com.odoo.core.orm.fields.OColumn;
+
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class ODataRow implements Parcelable {
+public class ODataRow {
     public static final String TAG = ODataRow.class.getSimpleName();
 
-    HashMap<String, Object> _data = new HashMap<>();
+    HashMap<String, Object> _data = new HashMap<String, Object>();
 
     public void put(String key, Object value) {
         _data.put(key, value);
@@ -65,26 +62,16 @@ public class ODataRow implements Parcelable {
     }
 
 
-    public OM2ORecord getM2ORecord(String key) {
-        return (OM2ORecord) _data.get(key);
-    }
 
-    public OM2MRecord getM2MRecord(String key) {
-        return (OM2MRecord) _data.get(key);
-    }
-
-    public OO2MRecord getO2MRecord(String key) {
-        return (OO2MRecord) _data.get(key);
-    }
 
     public List<Object> values() {
-        List<Object> values = new ArrayList<>();
+        List<Object> values = new ArrayList<Object>();
         values.addAll(_data.values());
         return values;
     }
 
     public List<String> keys() {
-        List<String> list = new ArrayList<>();
+        List<String> list = new ArrayList<String>();
         list.addAll(_data.keySet());
         return list;
     }
@@ -95,21 +82,6 @@ public class ODataRow implements Parcelable {
 
     public int size() {
         return _data.size();
-    }
-
-    @Override
-    public String toString() {
-        return _data.toString();
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-
     }
 
     public class IdName {
@@ -158,11 +130,5 @@ public class ODataRow implements Parcelable {
         return values;
     }
 
-    public Bundle getPrimaryBundleData() {
-        Bundle bundle = new Bundle();
-        bundle.putInt("id", getInt("id"));
-        bundle.putInt(OColumn.ROW_ID, getInt(OColumn.ROW_ID));
-        return bundle;
-    }
 
 }

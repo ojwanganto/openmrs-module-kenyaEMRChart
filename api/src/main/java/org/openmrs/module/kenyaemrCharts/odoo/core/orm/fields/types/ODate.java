@@ -19,7 +19,8 @@
  */
 package org.openmrs.module.kenyaemrCharts.odoo.core.orm.fields.types;
 
-import com.odoo.core.utils.ODateUtils;
+
+import org.openmrs.module.kenyaemrCharts.odoo.core.utils.ODateUtils;
 
 public class ODate extends OTypeHelper {
     public static final String TAG = ODate.class.getSimpleName();

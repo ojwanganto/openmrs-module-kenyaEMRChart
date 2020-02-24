@@ -19,38 +19,37 @@
  */
 package org.openmrs.module.kenyaemrCharts.odoo.core.rpc.helper.utils;
 
-import android.text.TextUtils;
-import android.util.Log;
+import org.openmrs.module.kenyaemrCharts.odoo.core.rpc.Odoo;
 
 import java.util.Locale;
 
-import com.odoo.core.rpc.Odoo;
 
 public class OdooLog {
     public static final String TAG = OdooLog.class.getSimpleName();
 
     public static void v(Object... args) {
-        if (Odoo.DEBUG)
-            Log.v(TAG, buildMessage(null, args));
+        if (Odoo.DEBUG){}
+            //Log.v(TAG, buildMessage(null, args));
     }
 
     public static void d(Object... args) {
-        if (Odoo.DEBUG)
-            Log.d(TAG, buildMessage(null, args));
+        if (Odoo.DEBUG){}
+            //Log.d(TAG, buildMessage(null, args));
     }
 
     public static void e(Object... args) {
-        if (Odoo.DEBUG)
-            Log.e(TAG, buildMessage(null, args));
+        if (Odoo.DEBUG){}
+            //Log.e(TAG, buildMessage(null, args));
     }
 
     public static void e(Throwable tr, Object... args) {
-        if (Odoo.DEBUG)
-            Log.e(TAG, buildMessage(null, args), tr);
+        if (Odoo.DEBUG) {}
+            //Log.e(TAG, buildMessage(null, args), tr);
     }
 
     private static String buildMessage(String format, Object... args) {
-        String msg = (args == null) ? "" : TextUtils.join(", ", args);
+        //String msg = (args == null) ? "" : TextUtils.join(", ", args);
+        String msg = (args == null) ? "" : args.toString();
         StackTraceElement[] trace = new Throwable().fillInStackTrace().getStackTrace();
 
         String caller = "<unknown>";

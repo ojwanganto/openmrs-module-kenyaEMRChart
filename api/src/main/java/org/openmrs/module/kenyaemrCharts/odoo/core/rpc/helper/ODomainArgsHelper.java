@@ -26,7 +26,7 @@ import java.util.List;
 
 public class ODomainArgsHelper<T> {
     public static final String TAG = ODomainArgsHelper.class.getSimpleName();
-    protected List<Object> mObjects = new ArrayList<>();
+    protected List<Object> mObjects = new ArrayList<Object>();
 
     /**
      * Add domain condition, array list

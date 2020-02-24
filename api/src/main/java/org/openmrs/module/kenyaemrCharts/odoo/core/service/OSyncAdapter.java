@@ -19,45 +19,14 @@
  */
 package org.openmrs.module.kenyaemrCharts.odoo.core.service;
 
-import android.accounts.Account;
-import android.content.AbstractThreadedSyncAdapter;
-import android.content.ContentProviderClient;
-import android.content.Context;
-import android.content.SyncResult;
-import android.os.Bundle;
-import android.util.Log;
 
-import com.odoo.App;
-import com.odoo.R;
-import com.odoo.base.addons.ir.IrModel;
-import com.odoo.base.addons.res.ResCompany;
-import com.odoo.core.account.About;
-import com.odoo.core.auth.OdooAccountManager;
-import com.odoo.core.orm.ODataRow;
-import com.odoo.core.orm.OModel;
-import com.odoo.core.orm.OValues;
-import com.odoo.core.orm.fields.OColumn;
-import com.odoo.core.rpc.Odoo;
-import com.odoo.core.rpc.handler.OdooVersionException;
-import com.odoo.core.rpc.helper.ODomain;
-import com.odoo.core.rpc.helper.ORecordValues;
-import com.odoo.core.rpc.helper.OdooFields;
-import com.odoo.core.rpc.helper.utils.gson.OdooRecord;
-import com.odoo.core.rpc.helper.utils.gson.OdooResult;
-import com.odoo.core.support.OUser;
-import com.odoo.core.utils.ODateUtils;
-import com.odoo.core.utils.OPreferenceManager;
-import com.odoo.core.utils.OResource;
-import com.odoo.core.utils.OdooRecordUtils;
-import com.odoo.core.utils.logger.OLog;
-import com.odoo.datas.OConstants;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class OSyncAdapter extends AbstractThreadedSyncAdapter {
-    public static final String TAG = OSyncAdapter.class.getSimpleName();
+public class OSyncAdapter /*extends AbstractThreadedSyncAdapter*/ {
+/*    public static final String TAG = OSyncAdapter.class.getSimpleName();
     private Context mContext;
     private App app = null;
     private Odoo mOdoo;
@@ -327,21 +296,21 @@ public class OSyncAdapter extends AbstractThreadedSyncAdapter {
         return fields;
     }
 
-    /**
+    *//**
      * Creates locally created record on server (id with zero)
      *
      * @param model model object
-     */
+     *//*
     private void createRecordsOnServer(OModel model) {
         List<ODataRow> records = model.select(null,
                 "(id = ? or id = ?)", new String[]{"0", "false"});
         int counter = 0;
         for (ODataRow record : records) {
             if (validateRelationRecords(model, record)) {
-                /*
+                *//*
                  Need to check server id for record.
                  It is possible that record created on server by validating main record.
-                 */
+                 *//*
                 if (model.selectServerId(record.getInt(OColumn.ROW_ID)) == 0) {
                     int id = createOnServer(model, OdooRecordUtils.createRecordValues(model, record));
                     if (id != OModel.INVALID_ROW_ID) {
@@ -362,14 +331,14 @@ public class OSyncAdapter extends AbstractThreadedSyncAdapter {
         }
     }
 
-    /**
+    *//**
      * Validate relation record for the record. And if relation record not created on server.
      * It will be created on server before syncing original record
      *
      * @param model
      * @param row
      * @return updatedRow
-     */
+     *//*
     public boolean validateRelationRecords(OModel model, ODataRow row) {
         Log.d(TAG, "Validating relation records for record");
         // Check for relation local record
@@ -415,13 +384,13 @@ public class OSyncAdapter extends AbstractThreadedSyncAdapter {
         return true;
     }
 
-    /**
+    *//**
      * Updating local record with server id
      *
      * @param model
      * @param row_id
      * @param server_id
-     */
+     *//*
     private void updateRecordServerId(OModel model, int row_id, int server_id) {
         OValues values = new OValues();
         values.put("id", server_id);
@@ -442,11 +411,11 @@ public class OSyncAdapter extends AbstractThreadedSyncAdapter {
         return id;
     }
 
-    /**
+    *//**
      * Removes record on server if local record is not active
      *
      * @param model
-     */
+     *//*
     private void removeRecordOnServer(OModel model) {
         List<ODataRow> records = model.select(new String[]{},
                 "id != ? and _is_active = ?", new String[]{"0", "false"});
@@ -474,11 +443,11 @@ public class OSyncAdapter extends AbstractThreadedSyncAdapter {
         return false;
     }
 
-    /**
+    *//**
      * Removes non exist record from local database
      *
      * @param model
-     */
+     *//*
     private void removeNonExistRecordFromLocal(OModel model) {
         List<Integer> ids = model.getServerIds();
         try {
@@ -518,5 +487,5 @@ public class OSyncAdapter extends AbstractThreadedSyncAdapter {
     public OSyncAdapter onSyncFinish(ISyncFinishListener syncFinish) {
         mSyncFinishListeners.put(mModel.getModelName(), syncFinish);
         return this;
-    }
+    }*/
 }

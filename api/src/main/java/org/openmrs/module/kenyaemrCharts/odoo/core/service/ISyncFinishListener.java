@@ -19,9 +19,9 @@
  */
 package org.openmrs.module.kenyaemrCharts.odoo.core.service;
 
-import android.content.SyncResult;
 
-import com.odoo.core.support.OUser;
+import org.openmrs.module.kenyaemrCharts.odoo.core.support.OUser;
+import org.openmrs.module.metadatadeploy.sync.SyncResult;
 
 public interface ISyncFinishListener {
     public OSyncAdapter performNextSync(OUser user, SyncResult syncResult);
