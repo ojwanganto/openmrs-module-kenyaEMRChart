@@ -105,6 +105,17 @@
                 })
         });
 
+        jq('#odoo').click(function() {
+            jq.getJSON('${ ui.actionLink("loginToOdoo") }')
+                .success(function(data) {
+                    console.log(data);
+                })
+                .error(function(xhr, status, err) {
+                    alert('AJAX error ' + err);
+                })
+        });
+
+
         jq(function() {
             jq( "#dialog-1" ).dialog({
                 autoOpen: false,
@@ -151,6 +162,10 @@ tr:nth-child(even) {background-color: #f2f2f2;}
 
     <button id="recreate"  style="height:43px;width:185px">
         <img src="${ ui.resourceLink("kenyaui", "images/buttons/undo.png") }" width="32" height="32" /> Recreate Tables
+    </button>
+
+    <button id="odoo"  style="height:43px;width:185px">
+        <img src="${ ui.resourceLink("kenyaui", "images/buttons/undo.png") }" width="32" height="32" /> Odoo Test
     </button>
 </div>
 <br/>

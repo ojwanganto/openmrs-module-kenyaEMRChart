@@ -65,6 +65,10 @@ public class OdooVersion {
 
     public static OdooVersion parseVersion(OdooResult result) throws OdooVersionException {
         OdooVersion version = new OdooVersion();
+        System.out.println("Parse Version object: " + result);
+/*
+        {"server_version":"13.0","server_serie":"13.0","server_version_info":[13,0,0,"final",0,""],"protocol_version":1}
+*/
         version.setServerSerie(result.getString("server_serie"));
         version.setServerVersion(result.getString("server_version"));
         List<Object> version_info = result.getArray("server_version_info");

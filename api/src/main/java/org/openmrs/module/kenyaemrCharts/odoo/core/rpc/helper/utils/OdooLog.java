@@ -33,8 +33,7 @@ public class OdooLog {
     }
 
     public static void d(Object... args) {
-        if (Odoo.DEBUG){}
-            //Log.d(TAG, buildMessage(null, args));
+        System.out.println(args);
     }
 
     public static void e(Object... args) {

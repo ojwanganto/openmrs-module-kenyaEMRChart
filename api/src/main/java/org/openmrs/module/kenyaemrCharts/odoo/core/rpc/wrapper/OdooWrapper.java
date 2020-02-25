@@ -87,6 +87,8 @@ import org.openmrs.module.kenyaemrCharts.odoo.core.rpc.listeners.IOdooResponse;
 import org.openmrs.module.kenyaemrCharts.odoo.core.rpc.listeners.OdooError;
 import org.openmrs.module.kenyaemrCharts.odoo.core.rpc.listeners.OdooSyncResponse;
 import org.openmrs.module.kenyaemrCharts.odoo.core.support.OUser;
+import org.openmrs.module.kenyaemrCharts.odoo.core.utils.logger.OLog;
+import org.openmrs.module.kenyaemrCharts.odoo.datas.OConstants;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -94,6 +96,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -110,7 +113,7 @@ public class OdooWrapper<T> {
     protected OUser user;
     protected Gson gson;
     private Odoo mOdoo;
-    private HttpClient client;
+    //private HttpClient client;
     private HashMap<String, Object> tempContext = null;
 
     private Integer new_request_timeout = Odoo.REQUEST_TIMEOUT_MS;
@@ -120,7 +123,7 @@ public class OdooWrapper<T> {
         serverURL = stripURL(baseURL);
         gson = new Gson();
         responseQueue = new OdooResponseQueue();
-        client = OdooSafeClient.getSafeClient(false);
+        //client = OdooSafeClient.getSafeClient(false);
 
         /*requestQueue = Volley.newRequestQueue(context,
                 new HttpClientStack(OdooSafeClient.getSafeClient(true)));*/
@@ -184,6 +187,7 @@ public class OdooWrapper<T> {
         OdooLog.d("REQUEST URL : " + url);
         final JSONObject postData = createRequestWrapper(params, odooResponse);
         OdooLog.d("POST DATA: " + postData);
+        System.out.println("Post Data" + postData);
 
         // -----------------------
         URL serverURL = null;
@@ -193,38 +197,37 @@ public class OdooWrapper<T> {
             // handle exception...
         }
 
-        // Create new JSON-RPC 2.0 client session
-        JSONRPC2Session mySession = new JSONRPC2Session(serverURL);
-        mySession.getOptions().setConnectTimeout(new_request_timeout); // 3 seconds
-        // mySession.getOptions().setReadTimeout(1000); // second
-
-        // Construct new request
-        String method = "getServerTime";
-        int requestID = 0;
-        JSONRPC2Request request = new JSONRPC2Request(method, requestID);
-        request.setNamedParams(null);
-
-        // Send request
-        JSONRPC2Response response = null;
-
+        JSONRPC2Response jsonRPC2Response = null;
+        JSONRPC2Session mJSONRPC2Session = null;
         try {
-            response = mySession.send(request);
+            mJSONRPC2Session = new JSONRPC2Session(serverURL);
+            mJSONRPC2Session.getOptions().setConnectTimeout(new_request_timeout);
+            Map<String, Object> rParams = new HashMap<String, Object>();
+            for (String k: postData.keySet()) {
+                rParams.put(k, postData.get(k));
+            }
+
+            jsonRPC2Response = mJSONRPC2Session.send(new JSONRPC2Request(OConstants.METHOD_CALL, rParams, getRequestID()));
+
         } catch (JSONRPC2SessionException e) {
-            System.err.println(e.getMessage());
-            // handle exception...
+            //throw new OpenErpException(e.getMessage(), "");
+            e.printStackTrace();
         }
 
         // Print response result / error
-        if (response.indicatesSuccess()) {
-            System.out.println(response.getResult());
+        if (jsonRPC2Response.indicatesSuccess()) {
+            System.out.println("RPC Result: " + jsonRPC2Response.getResult());
         } else {
-            System.out.println(response.getError().getMessage());
+            System.out.println("RPC Error: " + jsonRPC2Response.getError().getMessage());
         }
 
         // -----------------------
-/*        RequestFuture<JSONObject> requestFuture = RequestFuture.newFuture();
-        if (backResponse == null) {
-            Response.ErrorListener errorListener = new Response.ErrorListener() {
+/*
+        RequestFuture<JSONObject> requestFuture = RequestFuture.newFuture();
+*/
+       /* if (backResponse == null) {
+            OdooLog.e("There was an error!");
+            *//*Response.ErrorListener errorListener = new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
                     OdooLog.d("ERROR RESPONSE : " + error.getMessage());
@@ -262,10 +265,10 @@ public class OdooWrapper<T> {
                         OdooLog.e(e, e.getMessage());
                     }
                 }
-            };
+            };*//*
 
             // -----------------------
-            URL serverURL = null;
+            *//*URL serverURL = null;
 
             try {
                 serverURL = new URL(url);
@@ -299,26 +302,26 @@ public class OdooWrapper<T> {
             if (response.indicatesSuccess())
                 System.out.println(response.getResult());
             else
-                System.out.println(response.getError().getMessage());
+                System.out.println(response.getError().getMessage());*//*
 
             // -----------------------
-            JsonObjectRequest request = new JsonObjectRequest(url, postData, OdooWrapper.this, errorListener);
+            *//*JsonObjectRequest request = new JsonObjectRequest(url, postData, OdooWrapper.this, errorListener);
             request.setRetryPolicy(new DefaultRetryPolicy(new_request_timeout, new_request_max_retry,
                     DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-            requestQueue.add(request);
+            requestQueue.add(request);*//*
         } else {
-            JsonObjectRequest request = new JsonObjectRequest(url, postData, requestFuture, requestFuture);
+            *//*JsonObjectRequest request = new JsonObjectRequest(url, postData, requestFuture, requestFuture);
             request.setRetryPolicy(new DefaultRetryPolicy(new_request_timeout, new_request_max_retry,
                     DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-            requestQueue.add(request);
+            requestQueue.add(request);*//*
             try {
                 backResponse.setResponse(parseToResponse(requestFuture.get()));
             } catch (Exception e) {
                 OdooLog.e(e);
             }
-        }*/
+        }
         new_request_timeout = Odoo.REQUEST_TIMEOUT_MS;
-        new_request_max_retry = Odoo.DEFAULT_MAX_RETRIES;
+        new_request_max_retry = Odoo.DEFAULT_MAX_RETRIES;*/
     }
 
     public void requestController(String fullURL, JSONObject data, IOdooResponse callback) {
@@ -367,6 +370,8 @@ public class OdooWrapper<T> {
         OdooSyncResponse response = new OdooSyncResponse();
         getVersionInfo(null, response);
         OdooResult version = validateResult(response);
+        System.out.println("GET_VERSION_INFO:" + version);
+
         mVersion = OdooVersion.parseVersion(version);
         return version;
     }

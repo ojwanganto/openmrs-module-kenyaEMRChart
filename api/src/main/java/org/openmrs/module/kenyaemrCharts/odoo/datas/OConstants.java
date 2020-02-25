@@ -28,8 +28,9 @@ public class OConstants {
 
     public static final String ODOO_COMPANY_NAME = "Odoo";
 
-    public static final int RPC_REQUEST_TIME_OUT = 30000; // 30 Seconds
+    public static final int RPC_REQUEST_TIME_OUT = 3000; // 30 Seconds
     public static final int RPC_REQUEST_RETRIES = 1; // Retries when timeout
+
 
     /**
      * Database version. Required to change in increment order
@@ -39,4 +40,8 @@ public class OConstants {
      * in each of the model class for applying upgrade script for that model.
      */
     public static final int DATABASE_VERSION = 1;
+
+    public static final String METHOD_CALL = "call";
+    public static final String REQUEST_AUTHENTICATE = "/web/session/authenticate";
+    public static final String REQUEST_SEARCH_READ = "/web/dataset/search_read";
 }

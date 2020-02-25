@@ -8,6 +8,9 @@ import org.hibernate.jdbc.Work;
 import org.json.JSONObject;
 import org.openmrs.Patient;
 import org.openmrs.api.context.Context;
+import org.openmrs.module.kenyaemrCharts.odoo.core.rpc.Odoo;
+import org.openmrs.module.kenyaemrCharts.odoo.core.rpc.handler.OdooVersionException;
+import org.openmrs.module.kenyaemrCharts.odoo.core.support.OUser;
 import org.openmrs.ui.framework.SimpleObject;
 import org.openmrs.ui.framework.UiUtils;
 import org.openmrs.ui.framework.fragment.FragmentModel;
@@ -280,4 +283,16 @@ public class EtlManagerFragmentController {
         return sampleTypeObject;
 
     }
+
+    public SimpleObject loginToOdoo(UiUtils ui) {
+        try {
+            OUser login = Odoo.quickConnect("http://localhost:8069/", "admin","admin","antony");
+            System.out.println("Login Odoo version: " + login.getOdooVersion());
+            System.out.println("Login timezone: " + login.getTimezone());
+        } catch (OdooVersionException e) {
+            e.printStackTrace();
+        }
+        return SimpleObject.create("result","Trial");
+    }
+
 }
