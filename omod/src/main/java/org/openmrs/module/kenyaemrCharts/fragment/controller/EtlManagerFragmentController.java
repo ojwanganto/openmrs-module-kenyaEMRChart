@@ -2,6 +2,7 @@ package org.openmrs.module.kenyaemrCharts.fragment.controller;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.hibernate.Query;
 import org.hibernate.Transaction;
 import org.hibernate.jdbc.Work;
@@ -11,6 +12,10 @@ import org.openmrs.api.context.Context;
 import org.openmrs.module.kenyaemrCharts.odoo.core.rpc.Odoo;
 import org.openmrs.module.kenyaemrCharts.odoo.core.rpc.handler.OdooVersionException;
 import org.openmrs.module.kenyaemrCharts.odoo.core.support.OUser;
+import org.openmrs.module.kenyaemrCharts.openerp.OpenErpClient;
+import org.openmrs.module.kenyaemrCharts.openerp.OpenErpConfiguration;
+import org.openmrs.module.kenyaemrCharts.openerp.OpenErpException;
+import org.openmrs.module.kenyaemrCharts.openerp.OpenErpInterface;
 import org.openmrs.ui.framework.SimpleObject;
 import org.openmrs.ui.framework.UiUtils;
 import org.openmrs.ui.framework.fragment.FragmentModel;
@@ -285,13 +290,22 @@ public class EtlManagerFragmentController {
     }
 
     public SimpleObject loginToOdoo(UiUtils ui) {
+
+        OpenErpConfiguration conf = new OpenErpConfiguration();
+        conf.setHostname("http://localhost:8069");
+        conf.setDatabase("antony");
+        conf.setUsername("admin");
+        conf.setPassword("admin");
+        OpenErpClient.setConfiguration(conf);
+        OpenErpInterface openErp = OpenErpClient.getInstance();
+
+        //OUser login = Odoo.quickConnect("http://localhost:8069/", "admin","admin","antony");
         try {
-            OUser login = Odoo.quickConnect("http://localhost:8069/", "admin","admin","antony");
-            System.out.println("Login Odoo version: " + login.getOdooVersion());
-            System.out.println("Login timezone: " + login.getTimezone());
-        } catch (OdooVersionException e) {
+            System.out.println("Odoo Products: " + openErp.printProducts());
+        } catch (OpenErpException e) {
             e.printStackTrace();
         }
+
         return SimpleObject.create("result","Trial");
     }
 

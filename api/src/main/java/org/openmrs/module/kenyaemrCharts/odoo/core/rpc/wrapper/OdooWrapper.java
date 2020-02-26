@@ -57,10 +57,12 @@ import com.odoo.core.support.OUser;*/
 
 import com.google.gson.Gson;
 import com.google.gson.internal.LinkedTreeMap;
+import com.thetransactioncompany.jsonrpc2.JSONRPC2Parser;
 import com.thetransactioncompany.jsonrpc2.JSONRPC2Request;
 import com.thetransactioncompany.jsonrpc2.JSONRPC2Response;
 import com.thetransactioncompany.jsonrpc2.client.JSONRPC2Session;
 import com.thetransactioncompany.jsonrpc2.client.JSONRPC2SessionException;
+import net.minidev.json.parser.JSONParser;
 import org.apache.http.client.HttpClient;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -123,10 +125,6 @@ public class OdooWrapper<T> {
         serverURL = stripURL(baseURL);
         gson = new Gson();
         responseQueue = new OdooResponseQueue();
-        //client = OdooSafeClient.getSafeClient(false);
-
-        /*requestQueue = Volley.newRequestQueue(context,
-                new HttpClientStack(OdooSafeClient.getSafeClient(true)));*/
     }
 
     @SuppressWarnings("unchecked")
@@ -217,8 +215,11 @@ public class OdooWrapper<T> {
         // Print response result / error
         if (jsonRPC2Response.indicatesSuccess()) {
             System.out.println("RPC Result: " + jsonRPC2Response.getResult());
+
+            backResponse.setResponse(parseToResponse(new JSONObject(jsonRPC2Response.getResult().toString())));
         } else {
             System.out.println("RPC Error: " + jsonRPC2Response.getError().getMessage());
+            jsonRPC2Response.getError().printStackTrace();
         }
 
         // -----------------------
@@ -524,6 +525,7 @@ public class OdooWrapper<T> {
     public OUser authenticate(String username, String password, String database) {
         OdooSyncResponse response = new OdooSyncResponse();
         authenticate(username, password, database, null, response);
+        System.out.println("Authentication Response: ==> " + response.toString());
         OdooResult userResult = response.get().result;
         if (!(userResult.get("uid") instanceof Boolean)) {
             userResult.put("username", username);
@@ -558,6 +560,8 @@ public class OdooWrapper<T> {
             params.put("login", username);
             params.put("password", password);
             params.put("context", new JSONObject());
+            System.out.println("Attempting authentication: ===========================");
+
             newJSONPOSTRequest(url, params, new IOdooResponse() {
                 @Override
                 public void onResponse(OdooResult res) {
@@ -577,6 +581,7 @@ public class OdooWrapper<T> {
 
                 @Override
                 public void onError(OdooError error) {
+                    System.out.println("AuthenticationError: =============>  " + error.toString());
                     callback.onLoginFail(error);
                 }
             }, backResponse);
