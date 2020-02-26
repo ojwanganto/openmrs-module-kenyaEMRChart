@@ -76,6 +76,11 @@ public class UserClient {
             mJSONRPC2Session.setURL(mSearchReadUrl);
 
             JSONArray domain = new JSONArray();
+            JSONArray customer = new JSONArray();
+            customer.add(0, "is_company");//"customer", "=", true
+            customer.add(1, "=");//"customer", "=", true
+            customer.add(2, true);//"customer", "=", true
+            domain.add(customer);
 
             Map<String, Object> categoryParams = new HashMap<String, Object>();
             categoryParams.put("session_id", mJSONSessionId);
@@ -98,8 +103,8 @@ public class UserClient {
                 //o.put("Product country code", countryId);
                 prods.put(o);
 
-                System.out.println("Location Name: " + locName);
-                System.out.println("Country Code: " + productJson.get(COMMENT));
+                System.out.print("Product Name: " + locName);
+                System.out.println(", Comment Code: " + productJson.get(COMMENT));
             }
             return prods;
 

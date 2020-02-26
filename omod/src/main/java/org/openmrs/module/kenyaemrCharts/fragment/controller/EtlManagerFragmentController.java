@@ -301,7 +301,7 @@ public class EtlManagerFragmentController {
 
         //OUser login = Odoo.quickConnect("http://localhost:8069/", "admin","admin","antony");
         try {
-            System.out.println("Odoo Products: " + openErp.printProducts());
+            openErp.printProducts();
         } catch (OpenErpException e) {
             e.printStackTrace();
         }
