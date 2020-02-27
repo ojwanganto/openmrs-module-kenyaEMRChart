@@ -12,21 +12,21 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import java.io.Serializable;
 
-@Entity
-@Table(name = "location")
+/*@Entity
+@Table(name = "location")*/
 public class OdooLocation implements Serializable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+/*    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)*/
     protected long id;
 
-    @Column(name = "locationId")
+   /* @Column(name = "locationId")*/
     protected long locationId;
 
-    @Column(name = "name")
+   /* @Column(name = "name")*/
     protected String name;
 
-    @Column(name = "code")
+    /*@Column(name = "code")*/
     protected String code;
 
     public OdooLocation(){

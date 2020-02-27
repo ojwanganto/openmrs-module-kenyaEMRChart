@@ -11,62 +11,62 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import java.io.Serializable;
 
-@Entity
-@Table(name = "product")
+/*@Entity
+@Table(name = "product")*/
 public class Product implements Serializable {
 
-    @Id
-    @Column(name="database_id")
+/*    @Id
+    @Column(name="database_id")*/
     @JsonIgnore
     private Long databaseId;
 
-    @Column(name="id")
+    /*@Column(name="id")*/
     private Integer id;
 
-    @Column(name = "product_id")
+   /* @Column(name = "product_id")*/
     protected String productId;
 
-    @Column(name = "name", nullable = false)
+/*    @Column(name = "name", nullable = false)*/
     protected String name;
 
-    @Column(name = "description")
+/*    @Column(name = "description")*/
     protected String description;
 
-    @Column(name = "unit")
+/*    @Column(name = "unit")*/
     protected String unit;
 
-    @Column(name = "oum_id")
+/*    @Column(name = "oum_id")*/
     protected long oum_id;
 
-    @Column(name = "category_id")
+/*    @Column(name = "category_id")*/
     protected long categoryId;
 
-    @Column(name = "category_string")
+/*    @Column(name = "category_string")*/
     protected String categoryString;
 
-    @Column(name = "price")
+/*    @Column(name = "price")*/
     protected double price;
 
-    @Column(name = "available")
+/*    @Column(name = "available")*/
     protected int itemsAvailable;
 
-    @Column(name = "saleable")
+/*    @Column(name = "saleable")*/
     protected boolean saleable;
 
-    @Column(name = "location")
+/*    @Column(name = "location")*/
     protected String location;
 
-    @Column(name = "locationForProductMap")
+/*    @Column(name = "locationForProductMap")*/
     protected String locationForProductMap;
 
-    @Column(name = "location_id")
+/*    @Column(name = "location_id")*/
     protected long location_id;
 
-    @Column(name = "category", columnDefinition = "binary(4096)")
+/*    @Column(name = "category", columnDefinition = "binary(4096)")*/
     /*@DatabaseField(dataType = DataType.SERIALIZABLE)*/
     protected Category mCategory;
 
-    @Column(name = "UOM")
+/*    @Column(name = "UOM")*/
     /*@DatabaseField(dataType  = DataType.SERIALIZABLE)*/
     protected UOM mUom;
 

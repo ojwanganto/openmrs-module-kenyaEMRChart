@@ -74,7 +74,8 @@ public class OpenERPConnector {
         try {
             jsonRPC2Response = mJsonSession.send(authRequest);
             if (jsonRPC2Response.indicatesSuccess()) {
-                System.out.println("Authentication result: " + jsonRPC2Response.getResult());
+                //System.out.println("Authentication result: " + jsonRPC2Response.getResult());
+                //TODO: session_id is never returned in the response. Subsequent calls should simply use an existing session
                 //mSessionId = ((JSONObject) jsonRPC2Response.getResult()).get("session_id").toString();
                 //get the user_context from the connection result, to send to OpenERP in the next request
                 mUserContext = getUserContext(jsonRPC2Response);

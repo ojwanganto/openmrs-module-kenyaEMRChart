@@ -13,4 +13,5 @@ public interface OpenErpInterface {
     List<Product> searchForProductsByName(String searchString, int limit, int offset) throws OpenErpException;
     List<Product> searchForProductsByCategory(String searchString, int limit, int offset) throws OpenErpException;
     JSONArray printProducts() throws OpenErpException;
+    void createRecord() throws OpenErpException;
 }

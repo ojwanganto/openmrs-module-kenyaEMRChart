@@ -7,11 +7,10 @@ import com.thetransactioncompany.jsonrpc2.client.JSONRPC2Session;
 import com.thetransactioncompany.jsonrpc2.client.JSONRPC2SessionException;
 import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
+import org.openmrs.module.kenyaemrCharts.odoo.core.rpc.helper.utils.OdooLog;
 
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class UserClient {
@@ -22,8 +21,8 @@ public class UserClient {
     static final String FIELD_NAME = "name";
     static final String COUNTRY_ID = "country_id";
     static final String COMMENT = "comment";
-    static final String MODEL = "res.partner";
-    static final String SEARCH_READ_URL = "search_read";
+    static final String ODOO_PARTNER_MODEL = "res.partner";
+
 
 
     /*asList((Object[])models.execute("execute_kw", asList(
@@ -59,12 +58,14 @@ public class UserClient {
 
     private JSONRPC2Session mJSONRPC2Session;
     private URL mSearchReadUrl;
+    private URL mCreateRecordUrl;
     private String mJSONSessionId;
     private JSONObject mUsercontext;
 
-    public UserClient(OpenERPConnector aOpenERPConnector , URL aSearchReadURL){
+    public UserClient(OpenERPConnector aOpenERPConnector , URL aSearchReadURL, URL aCreateRecordURL){
         mJSONRPC2Session = aOpenERPConnector.getOpenERPJsonSession();
         mSearchReadUrl = aSearchReadURL;
+        mCreateRecordUrl = aCreateRecordURL;
         mJSONSessionId = aOpenERPConnector.getOpenERPSessionId();
         mUsercontext = aOpenERPConnector.getOpenERPUserContext();
     }
@@ -86,7 +87,7 @@ public class UserClient {
             categoryParams.put("session_id", mJSONSessionId);
             categoryParams.put("context", mUsercontext);
             categoryParams.put("domain", domain);
-            categoryParams.put("model", MODEL);
+            categoryParams.put("model", ODOO_PARTNER_MODEL);
             categoryParams.put("sort", "");
             categoryParams.put("fields", fields);
 
@@ -112,6 +113,34 @@ public class UserClient {
             throw new OpenErpException(e.getMessage(), "");
         }
 
+    }
+
+    public void createRecord(String model, JSONObject values) {
+        JSONRPC2Response jsonRPC2Response = null;
+        try {
+            mJSONRPC2Session.setURL(mCreateRecordUrl);
+            Map<String, Object> params = new HashMap<String, Object>();
+            org.json.JSONArray prodArr = new org.json.JSONArray();
+            prodArr.put(values);
+
+
+            org.json.JSONObject kwargs = new org.json.JSONObject();
+            org.json.JSONObject context = new org.json.JSONObject();
+            kwargs.put("context", context);
+            params.put("model", model);
+            params.put("method", "create");
+            params.put("args", prodArr.toList());
+            params.put("kwargs", kwargs);
+
+            System.out.println("Params: " + params.toString());
+
+            jsonRPC2Response = mJSONRPC2Session.send(new JSONRPC2Request(METHOD, params, OpenERPUtil.generateRequestID()));
+            JSONObject result = (JSONObject) jsonRPC2Response.getResult();
+            System.out.println("Created object: " + result.toJSONString());
+            //callMethod(model, "create", args, map, null, callback, backResponse);
+        } catch (Exception e) {
+            OdooLog.e(e, e.getMessage());
+        }
     }
 
 

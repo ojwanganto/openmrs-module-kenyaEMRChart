@@ -1,5 +1,6 @@
 package org.openmrs.module.kenyaemrCharts.openerp;
 
+import net.minidev.json.JSONObject;
 import org.json.JSONArray;
 
 import java.net.MalformedURLException;
@@ -12,6 +13,7 @@ public class OpenErpClient implements OpenErpInterface {
     private static OpenErpConfiguration config = null;
 
     private URL mSearchReadUrl;
+    private URL mCreateRecordUrl;
     private OpenERPConnector mOpenERPConnector;
 
     /***
@@ -52,6 +54,7 @@ public class OpenErpClient implements OpenErpInterface {
             System.exit(1);
         }
         mSearchReadUrl = new URL(config.getHostname() + OpenERPConst.REQUEST_SEARCH_READ);
+        mCreateRecordUrl = new URL(config.getHostname() + OpenERPConst.REQUEST_CREATE_RECORD);
         mOpenERPConnector = new OpenERPConnector(config,OpenERPConst.REQUEST_AUTHENTICATE);
         mOpenERPConnector.authenticate();
     }
@@ -167,8 +170,24 @@ public class OpenErpClient implements OpenErpInterface {
 
     @Override
     public JSONArray printProducts() throws OpenErpException {
-        UserClient userClient = new UserClient(mOpenERPConnector,mSearchReadUrl);
+        UserClient userClient = new UserClient(mOpenERPConnector,mSearchReadUrl, mCreateRecordUrl);
         return userClient.printProducts();
+    }
+
+    @Override
+    public void createRecord() throws OpenErpException {
+        UserClient userClient = new UserClient(mOpenERPConnector,mSearchReadUrl, mCreateRecordUrl);
+        JSONObject product = new JSONObject();
+        /*final Integer id = (Integer)models.execute("execute_kw", asList(
+                db, uid, password,
+                "res.partner", "create",
+                asList(new HashMap() {{ put("name", "New Partner"); }})
+        ));*/
+        //id = models.execute_kw(db, uid, password, 'res.partner', 'create', [{'name': "New Partner",}])
+        //{'name':'Test Product', 'display_name': 'Test Product-Antony','lang': 'en_US'}
+        product.put("name", "Siri");
+        //product.put("description", "Siri Test");
+        userClient.createRecord("product.product", product);
     }
 
     /***

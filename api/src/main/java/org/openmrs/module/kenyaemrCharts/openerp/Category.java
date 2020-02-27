@@ -13,34 +13,34 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity
-@Table(name = "category")
+/*@Entity
+@Table(name = "category")*/
 public class Category implements Serializable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+/*    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)*/
     private long id;
 
-    @Column(name = "category_id")
+/*    @Column(name = "category_id")*/
     protected long categoryId;
 
-    @Column(name = "category_name")
+/*    @Column(name = "category_name")*/
     protected String name;
 
-    @Column(name = "location_id")
+/*    @Column(name = "location_id")*/
     protected long location_id;
 
-    @Column(name = "location_string")
+/*    @Column(name = "location_string")*/
     protected String locationString;
 
-    @Column(name = "location_object")
+/*    @Column(name = "location_object")*/
     protected OdooLocation locationObject;
 
-    @Column(name = "parent_category_id")
+/*    @Column(name = "parent_category_id")*/
     protected long parent_category_id;
 
-    @Column(name = "category_childs")
-    @ElementCollection(targetClass=Long.class)
+/*    @Column(name = "category_childs")
+    @ElementCollection(targetClass=Long.class)*/
     protected List<Long> child_categories;
 
     public Category(){
